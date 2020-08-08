@@ -1,0 +1,42 @@
+Compact encoding for 6x6 Zuniq game states
+==========================================
+
+Number walls from 0 through 60 (exclusive) in row-major order:
+
+E.g., the top of the grid:
+
+ +  +  +  +  +  +
+
+ +  +  +  +  +  +
+
+... etc.
+
+Would be numbered as:
+
+ + 0+ 1+ 2+ 3+ 4+
+ 5  6  7  8  9 10
+ +11+12+13+14+15+
+16 17 18 19 20 21
+
+... etc.
+
+Now the game state can be encoded as a 60-bit integer, which is a bitmask of
+moves that have been played (e.g., if the top left cell is enclosed in a region
+of size 1, then bits 0, 5, 6 and 11 are set).
+
+Split the 60-bit number into 10 groups of 6 bits each, in little endian order,
+so that the first group contains the least significant bits (correspoding with
+the top of the grid) and the last group contains the most significant bits
+(corresponding with the bottom of the grid).
+
+Encode each group with a base 64 digit, using the URL-safe alphabet:
+A..Z, a..z, 0..9, - and _. No padding is necessary.
+
+The result is a 10 character ASCII string.
+
+The next player to move can be inferred from the number of bits set, which
+is equal to the number of moves played before.
+
+The encoding can also be used for other grid sizes, though some may require
+zero padding on the left to create a multiple of 6 bits, and the size of the
+grid would stil need to be encoded separately.

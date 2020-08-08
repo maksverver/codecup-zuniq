@@ -1,0 +1,63 @@
+Board can be divided into disjoint areas.
+
+Each area can be analysed independently, but combining state is tricky!
+
+Consider a sequence of moves. We can label each move with a number:
+
+ - 0 if the move does not close a region
+ - X if the move closes a region of size X
+
+A sequence of move is valid if it does not contain any duplicate X > 0.
+
+The cool thing is that for disjoint areas we can calculate the set of
+possible strings independently. For example, if we start from:
+
+ +--+--+
+       |
+ +  +  +
+
+There are 4 possible moves left. Considering all 24 permuations:
+
+Allows [0 0 2] (in six ways), [0 1 0 1] (in four ways) and [0 0 1 1] (in fourteen ways).
+
+ +--+--+
+       |
+ +  +--+
+
+ +--+--+
+ |     |
+ +  +  +
+
+ +--+--+
+       |
+ +--+  +
+
+ +--+--+
+    |  |
+ +  +  +
+
+Then we have [0 0 2], [0 1 0] and [0 0 1] as possible strings.
+
+The strings can be put into a trie. We can merge two independent tries as follows.
+For every node n of t1 and m of t2, there is a merged node (n+m) if and only if
+there are no duplicates numbers (except 0) in the path from n and m to their roots.
+
+(Instead of a trie, we could put the states in a DAG, but this might be more
+expensive to compute? But maybe it does lead to using less memory?)
+
+If we can merge all parts of the game like this, then we can evaluate the game
+value on this game tree. (How to map back to moves? We may have to keep one
+canonical move for each of the nodes in the tree.)
+
+Walls can be in four states:
+
+  - occupied
+  - permanently unavailable to move
+  - temporarily unavailable to move
+  - available to move
+
+When implementing "calling victory" do not call victory at the earliest
+opportunity until the final competition! Otherwise, you'll give information
+about your player's strength to competitors. Before the final competition,
+you can still call victory e.g. after move 30 or e.g. 4 moves after you
+first detected victory, to mislead opponents.

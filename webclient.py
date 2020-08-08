@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# Utility to connect a Zuniq player that implements that 2021 CAIA protocol to
+# Utility to connect a Zuniq player that implements that 2021 Caia protocol to
 # my game framework, which uses HTTP POST request and HTTP even streams.
 #
 # Warning: the code here is pretty ugly!
@@ -127,7 +127,6 @@ def PlayGame(command_args, session_url, event_stream_url, player_id, player_key)
                 print(e.read().decode('utf-8'))
                 sys.exit(1)
             moves.append(move)
-
 
 def Main():
     args = argument_parser.parse_args()
